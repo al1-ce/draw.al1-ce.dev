@@ -130,6 +130,8 @@ export class KlApp {
     private readonly toolspaceScroller: ToolspaceScroller;
     private readonly bottomBarWrapper: HTMLElement;
 
+    private prevTool: string;
+
     private updateCollapse(): void {
         this.mobileUi.setOrientation(this.uiState);
         if (this.uiWidth < this.collapseThreshold) {
@@ -886,7 +888,12 @@ export class KlApp {
                     this.toolspaceToolRow.setActive('brush');
                     mainTabRow && mainTabRow.open('brush');
                     updateMainTabVisibility();
-                    brushTabRow.open('eraserBrush');
+                    if (brushTabRow.getOpenedTabId() == 'eraserBrush') {
+                        brushTabRow.open(this.prevTool);
+                    } else {
+                        this.prevTool = brushTabRow.getOpenedTabId();
+                        brushTabRow.open('eraserBrush');
+                    }
                 }
                 if (comboStr === 'b') {
                     event.preventDefault();
